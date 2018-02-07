@@ -1,0 +1,16 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<img src="/abc/booktest/a1.jpg" alt="图片">
+<hr>
+<!-- 根据settings中的static_url 来动态改变路径 可以拿来隐藏真实的物理目录 预防攻击
+ 先匹配逻辑的规则 再从物理的找 物理的地址和逻辑地址没必要一样 emm 就好比形参和实参？
+ -->
+<img src="{% static 'booktest/a1.jpg' %}" alt="图片">
+</body>
+</html>
