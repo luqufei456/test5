@@ -10,9 +10,35 @@
             pro = $('#pro')
             $.get('/area/0/',function (dic) {// {data: [],[],[]...}
                 $.each(dic.data, function (index, item) {// item = [id, title]  index 是索引
-                    pro.append('<option value="'+item[0]+'">'+item[1]+'</option>')
+                    pro.append('<option value="'+item[0]+'">'+item[1]+'</option>');
                 });
             });
+
+            // 查询市信息  change事件  当元素的值发生改变时发生 事件是select上的 所以这里的this是 select pro 而不是option
+            // 但是 select 的value指：select中 选中的option的value  这个时候option中的value是各个省市的数据库id
+            $('#pro').change(function () {
+               $.get('/city'+$(this).val()+'/', function (list) {// [{id:1, title:'北京'}, {id:2, title:'上海'}...]
+                    city = $('#city');
+                    // 每次进入循环之前 就要将之前的清空 不然城市不会跟随省而变化  将区也跟着清空
+                    city.empty().append('<option value="">请选择市</option>');
+                    $('#dis').empty().append('<option value="">请选择区</option>');
+                    $.each(list.data, function (index, item) {
+                        city.append('<option value="'+item.id+'">'+item.title+'</option>');
+                    });
+               });
+            });
+
+            // 查询区县的信息
+            $('#city').change(function () {
+                $.get('/city'+$(this).val()+ '/', function (list) {
+                    dis = $('#dis').empty().append('<option value="">请选择区</option>');
+                    $.each(list.data, function (index, item) {
+                        // 没有下一级 用不上id了
+                       dis.append('<option value="">'+item.title+'</option>')
+                    });
+                });
+            });
+
         });
 
     </script>
